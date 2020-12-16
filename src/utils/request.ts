@@ -7,7 +7,7 @@ interface IPayload {
 	[key: string]: unknown;
 }
 
-export function get<T>(url: string, additionalHeaders: IHeaders, returnsJSON = true): Promise<T> {
+export function get<T>(url: string, additionalHeaders: IHeaders): Promise<T> {
 	return fetch(url, {
 		method: 'GET',
 		headers: {
@@ -15,7 +15,7 @@ export function get<T>(url: string, additionalHeaders: IHeaders, returnsJSON = t
 			Accept: 'application/json',
 			...additionalHeaders,
 		},
-	}).then((r) => (returnsJSON ? r.json() : r.text()));
+	}).then((r) => r.json());
 }
 
 export async function post<T>(url: string, payload: IPayload = {}, additionalHeaders: IHeaders): Promise<T> {
