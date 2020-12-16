@@ -174,4 +174,4 @@ class BkashGateway {
 	};
 }
 
-export default BkashGateway;
+export = BkashGateway;
