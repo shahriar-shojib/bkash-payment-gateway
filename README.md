@@ -6,6 +6,18 @@ Nodejs library to accept bkash payments on your backend application
 
 # How to use
 
+## Installing the library
+
+### `npm`
+
+> `npm install bkash-payment-gateway`
+
+### `yarn`
+
+> `yarn add bkash-payment-gateway`
+
+---
+
 ## Initializing the library
 
 ### `javascript`
