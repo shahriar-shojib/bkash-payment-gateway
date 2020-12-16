@@ -1,8 +1,10 @@
 name: Publish to NPM and Github Packages
 
 on:
-    release:
-        types: [created]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
     build:
@@ -25,6 +27,8 @@ jobs:
                   node-version: 14
                   registry-url: https://registry.npmjs.org/
             - run: npm ci
+            - run: npm run build
             - run: npm publish
+
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
