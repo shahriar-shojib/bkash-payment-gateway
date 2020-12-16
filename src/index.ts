@@ -1,15 +1,21 @@
 import { get, post } from './utils/request';
 import { diffSeconds } from './utils/diffSeconds';
 import { IHeaders } from './interfaces/headers.interface';
+
 import {
 	IBkashCreatePaymentResponse,
 	IBkashExecutePaymentResponse,
 	IBkashQueryPaymentResponse,
 	IBkashTokenResponse,
 } from './interfaces/bkashResponse.interface';
+
 import { BkashException } from './exceptions/bkashException';
 import { ICreatePayment } from './interfaces/createPayment.interface';
+import { IBkashConstructor } from './interfaces/main.interface';
 
+/**
+ * Bkash Payment Gateway Main Entrypoint
+ */
 class BkashGateway {
 	private token: string;
 	private refreshToken: string;
@@ -18,8 +24,26 @@ class BkashGateway {
 	private readonly key: string;
 	private readonly baseURL: string;
 	private headers: IHeaders;
+	/**
+	 *
+	 * @param config config object required by the `bkash-payment-gateway` package
+	 * @example
+	 * ```
+	 * const bkashConfig = {
+	 *   baseURL: 'https://checkout.sandbox.bka.sh/v1.2.0-beta/',
+	 *   key: 'abcdxx2369',
+	 *   username: 'bkashTest',
+	 *   password: 'bkashPassword1',
+	 *   secret: 'bkashSup3rS3cRet',
+	 * }
+	 * const bkash = new BkashGateway(config)
+	 * ```
+	 *
+	 */
 
-	constructor(baseURL: string, key: string, secret: string, username: string, password: string) {
+	constructor(config: IBkashConstructor) {
+		const { baseURL, key, password, secret, username } = config;
+
 		this.baseURL = baseURL;
 		this.key = key;
 		this.secret = secret;
@@ -29,8 +53,21 @@ class BkashGateway {
 		};
 	}
 
-	async createPayment(paymentDetails: ICreatePayment): Promise<IBkashCreatePaymentResponse> {
-		const token = await this.getToken();
+	/**
+	 *
+	 * @param paymentDetails Information required to start a payment flow
+	 *
+	 * @returns Promise of Bkash Create payment Response
+	 * @example
+	 * ```
+	 * const result = await bkash.createPayment({
+	 *   amount: 1000,
+	 *   orderID: 'ORD1020069',
+	 *   intent: 'sale',
+	 * });
+	 * ```
+	 */
+	createPayment = async (paymentDetails: ICreatePayment): Promise<IBkashCreatePaymentResponse> => {
 		const { amount, intent, orderID, merchantAssociationInfo } = paymentDetails;
 
 		const payload = {
@@ -41,37 +78,49 @@ class BkashGateway {
 			merchantAssociationInfo: merchantAssociationInfo ?? '',
 		};
 
-		const headers = {
-			authorization: token,
-			'x-app-key': this.key,
-		};
+		const headers = await this.createTokenHeader();
 		return await post<IBkashCreatePaymentResponse>(`${this.baseURL}/checkout/payment/create`, payload, headers);
-	}
+	};
 
-	async executePayment(paymentID: string): Promise<IBkashExecutePaymentResponse> {
+	/**
+	 * Execute a payment after an user has completed bkash auth flow
+	 * @param paymentID - Payment ID to Execute
+	 * @example
+	 * ```
+	 * const result = await bkash.executePayment(paymentID);
+	 * ```
+	 */
+	executePayment = async (paymentID: string): Promise<IBkashExecutePaymentResponse> => {
 		try {
-			const token = await this.getToken();
-			const headers = {
-				authorization: token,
-				'x-app-key': this.key,
-			};
-
+			const headers = await this.createTokenHeader();
 			return await post<IBkashExecutePaymentResponse>(`${this.baseURL}/checkout/payment/execute/${paymentID}`, null, headers);
 		} catch (error) {
 			throw new BkashException('Timeout of 30 Seconds Exceeded While Executing Payment, Please Query the Payment');
 		}
-	}
+	};
 
-	async queryPayment(paymentID: string): Promise<IBkashQueryPaymentResponse> {
+	/**
+	 * Query Payment From Bkash
+	 * @param paymentID - Payment ID to Query
+	 *
+	 * @example
+	 * ```
+	 * const result = await bkash.queryPayment(paymentID);
+	 * ```
+	 */
+	queryPayment = async (paymentID: string): Promise<IBkashQueryPaymentResponse> => {
+		const headers = await this.createTokenHeader();
+		return await get<IBkashQueryPaymentResponse>(`${this.baseURL}/checkout/payment/query/${paymentID}`, headers);
+	};
+
+	private createTokenHeader = async (): Promise<IHeaders> => {
 		const token = await this.getToken();
-		const headers = {
+		return {
 			authorization: token,
 			'x-app-key': this.key,
 		};
-		return await get<IBkashQueryPaymentResponse>(`${this.baseURL}/checkout/payment/query/${paymentID}`, headers);
-	}
-
-	async getToken(): Promise<string> {
+	};
+	private getToken = async (): Promise<string> => {
 		if (this.token) {
 			const diff = diffSeconds(this.tokenIssueTime);
 			if (diff > 3500) {
@@ -99,9 +148,9 @@ class BkashGateway {
 			this.tokenIssueTime = Date.now();
 			return this.token;
 		}
-	}
+	};
 
-	private getInitialToken(): Promise<IBkashTokenResponse> {
+	private getInitialToken = (): Promise<IBkashTokenResponse> => {
 		return post<IBkashTokenResponse>(
 			`${this.baseURL}/checkout/token/grant`,
 			{
@@ -110,9 +159,9 @@ class BkashGateway {
 			},
 			this.headers
 		);
-	}
+	};
 
-	private newToken(refresh: string): Promise<IBkashTokenResponse> {
+	private newToken = (refresh: string): Promise<IBkashTokenResponse> => {
 		return post<IBkashTokenResponse>(
 			`${this.baseURL}/checkout/token/refresh`,
 			{
@@ -122,6 +171,7 @@ class BkashGateway {
 			},
 			this.headers
 		);
-	}
+	};
 }
+
 export default BkashGateway;
