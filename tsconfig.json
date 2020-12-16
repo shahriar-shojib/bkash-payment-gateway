@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"allowSyntheticDefaultImports": true,
+		"allowJs": true,
+		"skipLibCheck": true,
+		"module": "commonjs",
+		"moduleResolution": "Node",
+		"outDir": "dist",
+		"declaration": true
+	}
+}
