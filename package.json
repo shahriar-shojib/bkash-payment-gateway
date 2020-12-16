@@ -1,0 +1,30 @@
+{
+	"name": "bkash-payment-gateway",
+	"version": "1.0.0",
+	"description": "Bkash Payment Gateway Library to accept payments on your node.js backend",
+	"main": "dist",
+	"files": [
+		"dist/index.js",
+		"dist/index.d.ts"
+	],
+	"engines": {
+		"node": ">=10"
+	},
+	"repository": "https://github.com/shahriar-shojib/bkash-payment-gateway.git",
+	"author": "Shahriar Shojib <shahriar_shojib@hotmail.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node-fetch": "^2.5.7",
+		"@typescript-eslint/eslint-plugin": "^4.10.0",
+		"@typescript-eslint/parser": "^4.10.0",
+		"eslint": "^7.15.0",
+		"typescript": "^4.1.3"
+	},
+	"scripts": {
+		"build": "tsc"
+	},
+	"dependencies": {
+		"abort-controller": "^3.0.0",
+		"node-fetch": "^2.6.1"
+	}
+}
