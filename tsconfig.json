@@ -5,8 +5,11 @@
 		"allowJs": true,
 		"skipLibCheck": true,
 		"module": "commonjs",
-		"moduleResolution": "Node",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
 		"outDir": "dist",
-		"declaration": true
+		"declaration": true,
+		"rootDir": "src",
+		"incremental": true
 	}
 }
