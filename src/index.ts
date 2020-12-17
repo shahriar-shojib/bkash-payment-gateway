@@ -6,12 +6,15 @@ import {
 	IBkashCreatePaymentResponse,
 	IBkashExecutePaymentResponse,
 	IBkashQueryPaymentResponse,
+	IBkashRefundResponse,
+	IBkashRefundStatusResponse,
+	IBkashSearchTransactionResponse,
 	IBkashTokenResponse,
 } from './interfaces/bkashResponse.interface';
 
 import { BkashException } from './exceptions/bkashException';
 import { ICreatePayment } from './interfaces/createPayment.interface';
-import { IBkashConstructor } from './interfaces/main.interface';
+import { IBkashConstructor, IRefundArgs } from './interfaces/main.interface';
 
 /**
  * Bkash Payment Gateway Main Entrypoint
@@ -54,6 +57,7 @@ class BkashGateway {
 	}
 
 	/**
+	 * Start the initial payment request
 	 *
 	 * @param paymentDetails Information required to start a payment flow
 	 *
@@ -67,7 +71,7 @@ class BkashGateway {
 	 * });
 	 * ```
 	 */
-	createPayment = async (paymentDetails: ICreatePayment): Promise<IBkashCreatePaymentResponse> => {
+	public createPayment = async (paymentDetails: ICreatePayment): Promise<IBkashCreatePaymentResponse> => {
 		const { amount, intent, orderID, merchantAssociationInfo } = paymentDetails;
 
 		const payload = {
@@ -90,7 +94,7 @@ class BkashGateway {
 	 * const result = await bkash.executePayment(paymentID);
 	 * ```
 	 */
-	executePayment = async (paymentID: string): Promise<IBkashExecutePaymentResponse> => {
+	public executePayment = async (paymentID: string): Promise<IBkashExecutePaymentResponse> => {
 		try {
 			const headers = await this.createTokenHeader();
 			return await post<IBkashExecutePaymentResponse>(`${this.baseURL}/checkout/payment/execute/${paymentID}`, null, headers);
@@ -108,9 +112,60 @@ class BkashGateway {
 	 * const result = await bkash.queryPayment(paymentID);
 	 * ```
 	 */
-	queryPayment = async (paymentID: string): Promise<IBkashQueryPaymentResponse> => {
+	public queryPayment = async (paymentID: string): Promise<IBkashQueryPaymentResponse> => {
 		const headers = await this.createTokenHeader();
 		return await get<IBkashQueryPaymentResponse>(`${this.baseURL}/checkout/payment/query/${paymentID}`, headers);
+	};
+
+	/**
+	 * Search with a transaction ID
+	 * @param trxID - Transaction ID to Search
+	 *
+	 * @example
+	 * ```
+	 * const result = await bkash.searchTransaction('TRX22347463XX');
+	 * ```
+	 */
+	public searchTransaction = async (trxID: string): Promise<IBkashSearchTransactionResponse> => {
+		return await get<IBkashSearchTransactionResponse>(`${this.baseURL}/checkout/payment/query/${trxID}`, await this.createTokenHeader());
+	};
+
+	/**
+	 * Refund a transaction
+	 * @param trxID - Transaction ID to Search
+	 *
+	 * @example
+	 * ```
+	 * const refunTransactionData = {
+	 *  paymentID: '22423169',
+	 *  amount: '25.69', //do not add more than two decimal points
+	 *  trxID: 'TRX22347463XX';
+	 *  sku: 'SK256519';
+	 * }
+	 *
+	 * const result = await bkash.refundTransaction(refunTransactionData);
+	 * ```
+	 */
+	public refundTransaction = async (refundInfo: IRefundArgs): Promise<IBkashRefundResponse> => {
+		return post<IBkashRefundResponse>(`${this.baseURL}/checkout/payment/refund`, refundInfo, await this.createTokenHeader());
+	};
+
+	/**
+	 * Check Refund Status for a given paymentID and transaction ID
+	 * @param trxID transaction ID
+	 * @param paymentID payment ID
+	 * @example
+	 * ```
+	 * const result = await bkash.refundStatus('TRX22347463XX', '12437969');
+	 * ```
+	 */
+
+	public refundStatus = async (trxID: string, paymentID: string): Promise<IBkashRefundStatusResponse> => {
+		return await post<IBkashRefundStatusResponse>(
+			`${this.baseURL}/checkout/payment/refund`,
+			{ trxID, paymentID },
+			await this.createTokenHeader()
+		);
 	};
 
 	private createTokenHeader = async (): Promise<IHeaders> => {
