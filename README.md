@@ -92,6 +92,37 @@ const result = await bkash.queryPayment('<Payment ID returned by bkash>');
 
 ---
 
+## Search Transaction
+
+```javascript
+const result = await bkash.searchTransaction('TRX22347463XX');
+```
+
+---
+
+## Refund a transaction
+
+```javascript
+const refunTransactionData = {
+	paymentID: '22423169',
+	amount: '25.69', //do not add more than two decimal points
+ 	trxID: 'TRX22347463XX';
+ 	sku: 'SK256519';
+}
+
+const result = await bkash.refundTransaction(refunTransactionData);
+```
+
+---
+
+## Check Refund Status
+
+```javascript
+const result = await bkash.refundStatus('TRX22347463XX', '12437969');
+```
+
+---
+
 ### Contributing
 
 -   Please Follow the code style and use the prettier config and eslint config provided in the repository
