@@ -2,6 +2,16 @@
 
 Nodejs library to accept bkash payments on your backend application
 
+## Features
+
+-   Implements all the methods required to get accepted as a merchant on bKash
+-   Written in typescript
+-   Get intellisense in when interacting with the library `vscode`
+-   Get Documentation and examples right inside your code editor `vscode`
+-   Get Bkash Response Intellisense
+-   Abort Request when an executePayment request exceeds `30 seconds` and get an error so that you can query the payment
+-   Get Human Readable exceptions when some error response is returned from bKash `in progress`
+
 ---
 
 # How to use
