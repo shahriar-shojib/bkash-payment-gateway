@@ -70,7 +70,7 @@ const paymentRequest = {
 	intent: 'sale',
 };
 
-const result = await bkash.createPayment();
+const result = await bkash.createPayment(paymentRequest);
 console.log(result);
 ```
 
