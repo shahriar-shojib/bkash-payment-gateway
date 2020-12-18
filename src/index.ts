@@ -87,7 +87,7 @@ class BkashGateway {
 	};
 
 	/**
-	 * Execute a payment after an user has completed bkash auth flow
+	 * Execute a payment after a user has completed bkash auth flow
 	 * @param paymentID - Payment ID to Execute
 	 * @example
 	 * ```
@@ -139,9 +139,9 @@ class BkashGateway {
 	 * const refunTransactionData = {
 	 *  paymentID: '22423169',
 	 *  amount: '25.69', //do not add more than two decimal points
-	 *  trxID: 'TRX22347463XX';
-	 *  sku: 'SK256519';
-	 * }
+	 *  trxID: 'TRX22347463XX',
+	 *  sku: 'SK256519',
+	 * };
 	 *
 	 * const result = await bkash.refundTransaction(refunTransactionData);
 	 * ```
@@ -205,8 +205,8 @@ class BkashGateway {
 		}
 	};
 
-	private getInitialToken = (): Promise<IBkashTokenResponse> => {
-		return post<IBkashTokenResponse>(
+	private getInitialToken = async (): Promise<IBkashTokenResponse> => {
+		const response = await post<IBkashTokenResponse>(
 			`${this.baseURL}/checkout/token/grant`,
 			{
 				app_key: this.key,
@@ -214,6 +214,8 @@ class BkashGateway {
 			},
 			this.headers
 		);
+		if (response.status === 'fail') throw new BkashException('Invalid API Credentials Provided');
+		return response;
 	};
 
 	private newToken = (refresh: string): Promise<IBkashTokenResponse> => {

@@ -1,0 +1,15 @@
+{
+	"name": "bkash-payment-gateway-example",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Shahriar Shojib <shahriar_shojib@hotmail.com>",
+	"license": "MIT",
+	"dependencies": {
+		"bkash-payment-gateway": "^1.3.2",
+		"express": "^4.17.1"
+	}
+}

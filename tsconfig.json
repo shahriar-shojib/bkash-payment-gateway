@@ -11,5 +11,6 @@
 		"declaration": true,
 		"rootDir": "src",
 		"incremental": true
-	}
+	},
+	"exclude": ["node_modules", "./examples/**/*.js"]
 }
