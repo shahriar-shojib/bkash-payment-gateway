@@ -113,14 +113,14 @@ const result = await bkash.searchTransaction('TRX22347463XX');
 ## Refund a transaction
 
 ```javascript
-const refunTransactionData = {
+const refundTransactionData = {
 	paymentID: '22423169',
 	amount: '25.69', //do not add more than two decimal points
  	trxID: 'TRX22347463XX';
  	sku: 'SK256519';
 }
 
-const result = await bkash.refundTransaction(refunTransactionData);
+const result = await bkash.refundTransaction(refundTransactionData);
 ```
 
 ---
