@@ -23,9 +23,9 @@ array-flatten@1.1.1:
   integrity sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
 
 bkash-payment-gateway@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/bkash-payment-gateway/-/bkash-payment-gateway-1.3.2.tgz#48d101b0193a3abe54b4fdff522f52c4044bd23a"
-  integrity sha512-kuaVfxhl518I3TxZDV+kDJXCghPV22NYtofwal+21hNp2Ut/aQynIlo4HaDwe7KdWzFpjmXAAn0pkbvzgsVnQw==
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/bkash-payment-gateway/-/bkash-payment-gateway-1.3.3.tgz#ec2fb16bbda9289c9fd1675f504816caa414bef1"
+  integrity sha512-ftE+vmWJ+VSR9A/NT7TikZknJK6dNJKrGrVZxJdHOLJbhqVrf10EMj5dFy9UvuZlNbjXUfVczVAEWTWS99BW2A==
   dependencies:
     abort-controller "^3.0.0"
     node-fetch "^2.6.1"
