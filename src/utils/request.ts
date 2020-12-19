@@ -2,20 +2,24 @@ import fetch from 'node-fetch';
 
 import { IHeaders } from '../interfaces/headers.interface';
 import AbortController from 'abort-controller';
+import { BkashException } from '../exceptions/bkashException';
 
 interface IPayload {
 	[key: string]: unknown;
 }
 
-export function get<T>(url: string, additionalHeaders: IHeaders): Promise<T> {
-	return fetch(url, {
+export async function get<T>(url: string, additionalHeaders: IHeaders): Promise<T> {
+	const response = await fetch(url, {
 		method: 'GET',
 		headers: {
 			'content-type': 'application/json',
 			Accept: 'application/json',
 			...additionalHeaders,
 		},
-	}).then((r) => r.json());
+	});
+	const parsed = await response.json();
+	if (parsed.errorMessage) throw new BkashException(parsed.errorMessage);
+	return parsed;
 }
 
 export async function post<T>(url: string, payload: IPayload = {}, additionalHeaders: IHeaders): Promise<T> {
@@ -35,5 +39,7 @@ export async function post<T>(url: string, payload: IPayload = {}, additionalHea
 	});
 
 	clearTimeout(timeout);
-	return await response.json();
+	const parsed = await response.json();
+	if (parsed.errorMessage) throw new BkashException(parsed.errorMessage);
+	return parsed;
 }
