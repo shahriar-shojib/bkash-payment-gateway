@@ -45,7 +45,15 @@ class BkashGateway {
 	 */
 
 	constructor(config: IBkashConstructor) {
+		if (Object.keys(config).length !== 5) throw new BkashException('Invalid Configuration provided');
+
 		const { baseURL, key, password, secret, username } = config;
+
+		if (!baseURL || baseURL === '') throw new BkashException('Invalid BaseURL provided');
+		if (!key || key === '') throw new BkashException('Invalid API Key provided');
+		if (!secret || secret === '') throw new BkashException('Invalid API secret provided');
+		if (!username || username === '') throw new BkashException('Invalid API username provided');
+		if (!password || password === '') throw new BkashException('Invalid API password provided');
 
 		this.baseURL = baseURL;
 		this.key = key;
