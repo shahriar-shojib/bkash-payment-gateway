@@ -13,18 +13,18 @@ bkashController.post('/create', async (req, res) => {
 			intent: 'sale',
 		});
 
-		return res.status(201).json({ success: true, data: result });
+		return res.status(201).json(result);
 	} catch (error) {
 		return res.status(400).json({ success: false, message: error.message });
 	}
 });
 
-bkashController.get('/execute/:paymentID', async (req, res) => {
+bkashController.post('/execute', async (req, res) => {
 	try {
-		const paymentID = req.params.paymentID;
+		const { paymentID } = req.body;
 		if (!paymentID || paymentID === '') throw new Error('Invalid Payment ID provided');
 		const result = await bkash.executePayment(paymentID);
-		return res.json({ success: true, data: result });
+		return res.json(result);
 	} catch (error) {
 		return res.status(400).json({ success: false, message: error.message });
 	}
