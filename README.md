@@ -2,6 +2,10 @@
 
 Nodejs library to accept bkash payments on your backend application
 
+![CodeQL](https://github.com/shahriar-shojib/bkash-payment-gateway/workflows/CodeQL/badge.svg)
+![Test for linting and formatting](https://github.com/shahriar-shojib/bkash-payment-gateway/workflows/Test%20for%20linting%20and%20formatting/badge.svg)
+![Publish to NPM and Github Packages](https://github.com/shahriar-shojib/bkash-payment-gateway/workflows/Publish%20to%20NPM%20and%20Github%20Packages/badge.svg)
+
 ## Examples
 
 -   [Express](https://github.com/shahriar-shojib/bkash-payment-gateway/tree/main/examples)
