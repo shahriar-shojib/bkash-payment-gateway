@@ -23,6 +23,6 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
-            - run: npm ci
-            - run: npm run lint
-            - run: npm run formatcheck
+            - run: yarn ci
+            - run: yarn lint
+            - run: yarn formatcheck
