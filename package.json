@@ -1,6 +1,6 @@
 {
 	"name": "bkash-payment-gateway",
-	"version": "1.3.4",
+	"version": "1.3.5",
 	"description": "Bkash Payment Gateway Library to accept payments on your node.js backend",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -27,11 +27,26 @@
 	"scripts": {
 		"build": "tsc",
 		"lint": "eslint .",
-		"formatcheck": "prettier -c ."
+		"formatcheck": "prettier -c .",
+		"ci": "yarn --frozen-lockfile"
 	},
 	"dependencies": {
 		"abort-controller": "^3.0.0",
-		"cors": "^2.8.5",
 		"node-fetch": "^2.6.1"
-	}
+	},
+	"keywords": [
+		"bkash",
+		"bkash-pgw",
+		"bkash-nodejs",
+		"bkash-express",
+		"bkash-api-library",
+		"nodejs",
+		"typescript",
+		"bkash",
+		"npm",
+		"javascript",
+		"bkash-online-payment",
+		"bkash-payment-gateway",
+		"bkash-payment"
+	]
 }

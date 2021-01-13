@@ -18,6 +18,17 @@ import { IBkashConstructor, IRefundArgs } from './interfaces/main.interface';
 
 /**
  * Bkash Payment Gateway Main Entrypoint
+ * @example
+ * ```javascript
+ * const BkashGateway = require('bkash-payment-gateway');
+ * const bkash = new BkashGateway({
+ *		baseURL: process.env.BKASH_BASEURL,
+ *		key: process.env.BKASH_API_KEY,
+ *		secret: process.env.BKASH_API_SECRET,
+ *		username: process.env.BKASH_USERNAME,
+ *		password: process.env.BKASH_PASSWORD,
+ * });
+ * ```
  */
 class BkashGateway {
 	private token: string;
@@ -45,16 +56,12 @@ class BkashGateway {
 	 */
 
 	constructor(config: IBkashConstructor) {
+		// validations
 		if (Object.keys(config).length !== 5) throw new BkashException('Invalid Configuration provided');
+		this.validateConfig(config);
 
+		//main task
 		const { baseURL, key, password, secret, username } = config;
-
-		if (!baseURL || baseURL === '') throw new BkashException('Invalid BaseURL provided');
-		if (!key || key === '') throw new BkashException('Invalid API Key provided');
-		if (!secret || secret === '') throw new BkashException('Invalid API secret provided');
-		if (!username || username === '') throw new BkashException('Invalid API username provided');
-		if (!password || password === '') throw new BkashException('Invalid API password provided');
-
 		this.baseURL = baseURL;
 		this.key = key;
 		this.secret = secret;
@@ -236,6 +243,16 @@ class BkashGateway {
 			},
 			this.headers
 		);
+	};
+
+	private validateConfig = (config: IBkashConstructor): void => {
+		const { baseURL, key, password, secret, username } = config;
+
+		if (!baseURL || baseURL === '') throw new BkashException('Invalid BaseURL provided');
+		if (!key || key === '') throw new BkashException('Invalid API Key provided');
+		if (!secret || secret === '') throw new BkashException('Invalid API secret provided');
+		if (!username || username === '') throw new BkashException('Invalid API username provided');
+		if (!password || password === '') throw new BkashException('Invalid API password provided');
 	};
 }
 
