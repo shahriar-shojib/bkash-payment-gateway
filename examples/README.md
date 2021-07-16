@@ -4,9 +4,8 @@
 
 run the following command to clone this folder to your computer
 
-> npx degit shahriar-shojib/bkash-payment-gateway/examples#main output_directory
-
 ```bash
+npx degit shahriar-shojib/bkash-payment-gateway/examples output_directory
 cd <output directory>
 yarn install # install dependencies
 mv .env.example .env #rename .env.example to .env
