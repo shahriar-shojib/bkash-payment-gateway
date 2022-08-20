@@ -1,6 +1,6 @@
-import { get, post } from './utils/request';
-import { diffSeconds } from './utils/diffSeconds';
 import { IHeaders } from './interfaces/headers.interface';
+import { diffSeconds } from './utils/diffSeconds';
+import { get, post } from './utils/request';
 
 import {
 	IBkashCreatePaymentResponse,
@@ -30,10 +30,10 @@ import { IBkashConstructor, IRefundArgs } from './interfaces/main.interface';
  * });
  * ```
  */
-class BkashGateway {
-	private token: string;
-	private refreshToken: string;
-	private tokenIssueTime: number;
+export class BkashGateway {
+	private token!: string;
+	private refreshToken!: string;
+	private tokenIssueTime!: number;
 	private readonly secret: string;
 	private readonly key: string;
 	private readonly baseURL: string;
@@ -112,8 +112,16 @@ class BkashGateway {
 	public executePayment = async (paymentID: string): Promise<IBkashExecutePaymentResponse> => {
 		try {
 			const headers = await this.createTokenHeader();
-			return await post<IBkashExecutePaymentResponse>(`${this.baseURL}/checkout/payment/execute/${paymentID}`, null, headers);
+			return await post<IBkashExecutePaymentResponse>(
+				`${this.baseURL}/checkout/payment/execute/${paymentID}`,
+				undefined,
+				headers
+			);
 		} catch (error) {
+			if (error instanceof BkashException) {
+				throw error;
+			}
+
 			throw new BkashException('Timeout of 30 Seconds Exceeded While Executing Payment, Please Query the Payment');
 		}
 	};
@@ -142,7 +150,10 @@ class BkashGateway {
 	 * ```
 	 */
 	public searchTransaction = async (trxID: string): Promise<IBkashSearchTransactionResponse> => {
-		return await get<IBkashSearchTransactionResponse>(`${this.baseURL}/checkout/payment/query/${trxID}`, await this.createTokenHeader());
+		return await get<IBkashSearchTransactionResponse>(
+			`${this.baseURL}/checkout/payment/query/${trxID}`,
+			await this.createTokenHeader()
+		);
 	};
 
 	/**
@@ -162,7 +173,11 @@ class BkashGateway {
 	 * ```
 	 */
 	public refundTransaction = async (refundInfo: IRefundArgs): Promise<IBkashRefundResponse> => {
-		return post<IBkashRefundResponse>(`${this.baseURL}/checkout/payment/refund`, refundInfo, await this.createTokenHeader());
+		return post<IBkashRefundResponse>(
+			`${this.baseURL}/checkout/payment/refund`,
+			refundInfo,
+			await this.createTokenHeader()
+		);
 	};
 
 	/**
@@ -191,33 +206,34 @@ class BkashGateway {
 		};
 	};
 	private getToken = async (): Promise<string> => {
-		if (this.token) {
-			const diff = diffSeconds(this.tokenIssueTime);
-			if (diff > 3500) {
-				//request a new token if expired
-				const { id_token, refresh_token, msg, status } = await this.newToken(this.refreshToken);
-
-				//throw error if bkash sends status [only happens when request fails]
-				if (status) throw new BkashException(msg);
-
-				this.token = id_token;
-				this.refreshToken = refresh_token;
-				this.tokenIssueTime = Date.now();
-			}
-
-			return this.token;
-		} else {
-			//first time?
+		if (!this.token) {
 			const { id_token, refresh_token, msg, status } = await this.getInitialToken();
 
 			//throw error if bkash sends status [only happens when request fails]
-			if (status) throw new BkashException(msg);
+			if (status && msg) throw new BkashException(msg);
 
 			this.token = id_token;
 			this.refreshToken = refresh_token;
 			this.tokenIssueTime = Date.now();
 			return this.token;
 		}
+
+		const diff = diffSeconds(this.tokenIssueTime);
+
+		if (diff < 3500) {
+			return this.token;
+		}
+
+		//token is expired, refresh it
+		const { id_token, refresh_token, msg, status } = await this.newToken(this.refreshToken);
+
+		//throw error if bkash sends status [only happens when request fails]
+		if (status && msg) throw new BkashException(msg);
+
+		this.token = id_token;
+		this.refreshToken = refresh_token;
+		this.tokenIssueTime = Date.now();
+		return this.token;
 	};
 
 	private getInitialToken = async (): Promise<IBkashTokenResponse> => {
@@ -256,4 +272,4 @@ class BkashGateway {
 	};
 }
 
-export = BkashGateway;
+export default BkashGateway;

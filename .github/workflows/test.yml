@@ -1,0 +1,29 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: sudo timedatectl set-timezone "Asia/Dhaka"
+      - run: yarn ci
+      - run: yarn lint
+      - run: yarn formatcheck
+      - run: yarn build
+      - run: yarn test
+        env:
+          BKASH_BASEURL: ${{secrets.BKASH_BASEURL}}
+          BKASH_API_KEY: ${{secrets.BKASH_API_KEY}}
+          BKASH_API_SECRET: ${{secrets.BKASH_API_SECRET}}
+          BKASH_USERNAME: ${{secrets.BKASH_USERNAME}}
+          BKASH_PASSWORD: ${{secrets.BKASH_PASSWORD}}

@@ -1,4 +1,9 @@
+/**
+ *
+ * @param date - Date in Milliseconds
+ * @returns
+ */
 export function diffSeconds(date: number): number {
-	const diff = new Date(Date.now()).getTime() - new Date(date).getTime();
+	const diff = Date.now() - date;
 	return diff / 1000;
 }

@@ -8,17 +8,17 @@ Nodejs library to accept bkash payments on your backend application
 
 ## Examples
 
--   [Express](https://github.com/shahriar-shojib/bkash-payment-gateway/tree/main/examples)
+- [Express](https://github.com/shahriar-shojib/bkash-payment-gateway/tree/main/examples)
 
 ## Features
 
--   Implements all the methods required to get accepted as a merchant on bKash
--   Written in typescript
--   Get intellisense in when interacting with the library `vscode`
--   Get Documentation and examples right inside your code editor `vscode`
--   Get Bkash Response Intellisense
--   Abort Request when an executePayment request exceeds `30 seconds` and get an error so that you can query the payment
--   Get Human Readable exceptions when some error response is returned from bKash `in progress`
+- Implements all the methods required to get accepted as a merchant on bKash
+- Written in typescript
+- Get intellisense in when interacting with the library `vscode`
+- Get Documentation and examples right inside your code editor `vscode`
+- Get Bkash Response Intellisense
+- Abort Request when an executePayment request exceeds `30 seconds` and get an error so that you can query the payment
+- Get Human Readable exceptions when some error response is returned from bKash `in progress`
 
 ---
 
@@ -143,10 +143,10 @@ const result = await bkash.refundStatus('TRX22347463XX', '12437969');
 
 ### Contributing
 
--   Please Follow the code style and use the prettier config and eslint config provided in the repository
--   Feel free to open `issues` or `pull request` for any issues and bugfixes
--   If you want to implement new features or write documentation about existing features feel free to do it as well
--   To see a list of missing features or to-do's, please visit the `project` section of the github repository
+- Please Follow the code style and use the prettier config and eslint config provided in the repository
+- Feel free to open `issues` or `pull request` for any issues and bugfixes
+- If you want to implement new features or write documentation about existing features feel free to do it as well
+- To see a list of missing features or to-do's, please visit the `project` section of the github repository
 
 ---
 

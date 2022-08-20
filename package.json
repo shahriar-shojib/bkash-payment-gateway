@@ -7,6 +7,13 @@
 	"files": [
 		"dist"
 	],
+	"exports": {
+		".": {
+			"require": "./dist/index.js",
+			"import": "./dist/index.mjs",
+			"types": "./dist/index.d.ts"
+		}
+	},
 	"engines": {
 		"node": ">=10"
 	},
@@ -17,22 +24,34 @@
 	"author": "Shahriar Shojib <shahriar_shojib@hotmail.com>",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/node-fetch": "^2.5.7",
-		"@typescript-eslint/eslint-plugin": "^4.10.0",
-		"@typescript-eslint/parser": "^4.10.0",
-		"eslint": "^7.15.0",
-		"prettier": "latest",
-		"typescript": "^4.1.3"
+		"@changesets/changelog-github": "^0.4.6",
+		"@changesets/cli": "^2.24.3",
+		"@swc/core": "^1.2.241",
+		"@swc/jest": "^0.2.22",
+		"@types/dotenv": "^8.2.0",
+		"@types/jest": "^28.1.7",
+		"@types/node": "^18.7.8",
+		"@types/node-fetch": "^2.6.2",
+		"@typescript-eslint/eslint-plugin": "^5.33.1",
+		"@typescript-eslint/parser": "^5.33.1",
+		"dotenv": "^16.0.1",
+		"eslint": "^8.22.0",
+		"jest": "^28.1.3",
+		"prettier": "^2.7.1",
+		"tsup": "^6.2.2",
+		"typescript": "^4.7.4"
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "tsup",
 		"lint": "eslint .",
 		"formatcheck": "prettier -c .",
-		"ci": "yarn --frozen-lockfile"
+		"format": "prettier -c -w .",
+		"ci": "yarn --frozen-lockfile",
+		"test": "jest"
 	},
 	"dependencies": {
 		"abort-controller": "^3.0.0",
-		"node-fetch": "^2.6.1"
+		"node-fetch": "^2.6.7"
 	},
 	"keywords": [
 		"bkash",
@@ -48,5 +67,17 @@
 		"bkash-online-payment",
 		"bkash-payment-gateway",
 		"bkash-payment"
-	]
+	],
+	"jest": {
+		"moduleFileExtensions": [
+			"ts",
+			"js"
+		],
+		"rootDir": "src",
+		"testRegex": ".spec.ts$",
+		"transform": {
+			"^.+\\.(t|j)s$": "@swc/jest"
+		},
+		"testEnvironment": "node"
+	}
 }
