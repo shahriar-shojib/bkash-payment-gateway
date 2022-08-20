@@ -47,7 +47,8 @@
 		"formatcheck": "prettier -c .",
 		"format": "prettier -c -w .",
 		"ci": "yarn --frozen-lockfile",
-		"test": "jest"
+		"test": "jest",
+		"release": "changesets publish"
 	},
 	"dependencies": {
 		"abort-controller": "^3.0.0",
