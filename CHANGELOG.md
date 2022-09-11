@@ -1,5 +1,11 @@
 # bkash-payment-gateway
 
+## 2.0.1
+
+### Patch Changes
+
+- [#123](https://github.com/shahriar-shojib/bkash-payment-gateway/pull/123) [`b2cd514`](https://github.com/shahriar-shojib/bkash-payment-gateway/commit/b2cd514d40662df86c67961baacf54dc7567f3be) Thanks [@shahriar-shojib](https://github.com/shahriar-shojib)! - fix: run build and tests before publish
+
 ## 2.0.0
 
 ### Major Changes

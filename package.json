@@ -1,6 +1,6 @@
 {
 	"name": "bkash-payment-gateway",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Bkash Payment Gateway Library to accept payments on your node.js backend",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
