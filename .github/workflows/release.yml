@@ -21,17 +21,18 @@ jobs:
       - run: yarn formatcheck
       - run: yarn build
       - run: yarn test
+        env:
+          BKASH_BASEURL: ${{secrets.BKASH_BASEURL}}
+          BKASH_API_KEY: ${{secrets.BKASH_API_KEY}}
+          BKASH_API_SECRET: ${{secrets.BKASH_API_SECRET}}
+          BKASH_USERNAME: ${{secrets.BKASH_USERNAME}}
+          BKASH_PASSWORD: ${{secrets.BKASH_PASSWORD}}
 
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
           publish: yarn release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          BKASH_BASEURL: ${{secrets.BKASH_BASEURL}}
-          BKASH_API_KEY: ${{secrets.BKASH_API_KEY}}
-          BKASH_API_SECRET: ${{secrets.BKASH_API_SECRET}}
-          BKASH_USERNAME: ${{secrets.BKASH_USERNAME}}
-          BKASH_PASSWORD: ${{secrets.BKASH_PASSWORD}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
