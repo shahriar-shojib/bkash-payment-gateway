@@ -62,9 +62,9 @@ module.exports = bkash;
 > file `bkash.ts`
 
 ```typescript
-import BkashGateway, { ICreatePayment } from 'bkash-payment-gatway';
+import BkashGateway, { IBkashConstructor } from 'bkash-payment-gateway';
 
-const bkashConfig: ICreatePayment = {
+const bkashConfig: IBkashConstructor = {
 	//get intellisense here
 	baseURL: 'https://checkout.sandbox.bka.sh/v1.2.0-beta', //do not add a trailing slash
 	key: 'abcdxx2369',
