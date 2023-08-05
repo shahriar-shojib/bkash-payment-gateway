@@ -43,7 +43,7 @@ Nodejs library to accept bkash payments on your backend application
 > file `bkash.js`
 
 ```javascript
-const BkashGateway = require('bkash-payment-gateway');
+const { BkashGateway } = require('bkash-payment-gateway');
 
 const bkashConfig = {
 	baseURL: 'https://checkout.sandbox.bka.sh/v1.2.0-beta', //do not add a trailing slash
@@ -62,7 +62,7 @@ module.exports = bkash;
 > file `bkash.ts`
 
 ```typescript
-import BkashGateway, { ICreatePayment } from 'bkash-payment-gatway';
+import { BkashGateway ICreatePayment } from 'bkash-payment-gatway';
 
 const bkashConfig: ICreatePayment = {
 	//get intellisense here
